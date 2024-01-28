@@ -15,3 +15,12 @@ test('Input and result logic', () => {
 	test.getUserInput(test.getWords()[1].text);
 	expect(test.getResults(1)).toStrictEqual({ wpm: 120, acc: 100 });
 });
+
+test('Removes typed word', () => {
+	const test = new TypingTest(30);
+	test.getUserInput('hello');
+	test.getUserInput('bye');
+	expect(test.getWords().length).toBe(32);
+	test.removeTypedWords();
+	expect(test.getWords().length).toBe(30);
+});

@@ -1,4 +1,5 @@
 import { WORDS } from '../utils/words';
+import { v4 as uuidv4 } from 'uuid';
 
 type wordStatus = 'correct' | 'incorrect' | 'none';
 type resultType = { wpm: number; acc: number };
@@ -6,8 +7,10 @@ type resultType = { wpm: number; acc: number };
 export class Word {
 	public text: string;
 	public status: wordStatus;
+	public id: string;
 
 	constructor(text: string) {
+		this.id = uuidv4();
 		this.text = text;
 		this.status = 'none';
 	}
@@ -66,6 +69,11 @@ class TypingTest {
 			wpm: (this.correct / seconds) * 60,
 			acc: (this.correct * 100) / (this.correct + this.incorrect),
 		};
+	}
+
+	removeTypedWords() {
+		this.words = this.words.slice(this.currentIndex, this.words.length);
+		this.currentIndex = 0;
 	}
 }
 
