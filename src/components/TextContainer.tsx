@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import TypingTest, { Word } from '../classes/TypingTest';
+import TypingTest from '../classes/TypingTest';
 
 const TextContainer = () => {
 	const [test, setTest] = useState<TypingTest | null>(null);
@@ -8,7 +8,7 @@ const TextContainer = () => {
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isReady, setIsReady] = useState<boolean | null>(null);
 
-	const onKeyPress = (e: ChangeEvent<HTMLTextAreaElement>) => {
+	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value == ' ') {
 			return;
 		}
