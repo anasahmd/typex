@@ -1,9 +1,5 @@
-import { beforeEach, expect, test } from 'vitest';
+import { expect, test } from 'vitest';
 import TypingTest from './TypingTest';
-
-// beforeEach(() => {
-//   const test = new TypingTest(30)
-// })
 
 test('Adds 1 letter in the array for each input', () => {
 	const test = new TypingTest(30);

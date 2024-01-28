@@ -3,7 +3,7 @@ import { WORDS } from '../utils/words';
 type wordStatus = 'correct' | 'incorrect' | 'none';
 type resultType = { wpm: number; acc: number };
 
-class Word {
+export class Word {
 	public text: string;
 	public status: wordStatus;
 
@@ -19,11 +19,15 @@ class TypingTest {
 	private correct: number;
 	private incorrect: number;
 
-	constructor(words: number) {
+	constructor(words = 60) {
 		this.words = this.generateRandomWords(words);
 		this.currentIndex = 0;
 		this.correct = 0;
 		this.incorrect = 0;
+	}
+
+	getCurrentIndex(): number {
+		return this.currentIndex;
 	}
 
 	private generateRandomWords(count: number): Word[] {
@@ -47,8 +51,10 @@ class TypingTest {
 	getUserInput(text: string) {
 		if (this.words[this.currentIndex].text === text) {
 			this.correct++;
+			this.words[this.currentIndex].status = 'correct';
 		} else {
 			this.incorrect++;
+			this.words[this.currentIndex].status = 'incorrect';
 		}
 		this.currentIndex++;
 		const word = this.generateRandomWord();
