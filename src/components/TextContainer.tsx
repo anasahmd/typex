@@ -1,59 +1,15 @@
-import { ChangeEvent, useEffect, useState } from 'react';
 import TypingTest from '../classes/TypingTest';
 
-const TextContainer = () => {
-	const [test, setTest] = useState<TypingTest | null>(null);
-	const [inputText, setInputText] = useState('');
-	const [isCorrect, setIsCorrect] = useState(true);
-	const [offset, setOffset] = useState<number | undefined>(undefined);
-	const [isReady, setIsReady] = useState<boolean | null>(null);
-
-	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.value == ' ') {
-			return;
-		}
-
-		if (e.target.value.slice(-1) === ' ') {
-			test!.getUserInput(e.target.value.slice(0, e.target.value.length - 1));
-			const nextWord = document.getElementById('current-word')
-				?.nextElementSibling as HTMLElement;
-
-			if (nextWord && nextWord.offsetTop > offset!) {
-				test?.removeTypedWords();
-			}
-			setInputText('');
-			setIsCorrect(true);
-		} else {
-			setInputText(e.target.value);
-			if (
-				test
-					?.getWords()
-					[test.getCurrentIndex()].text.slice(0, e.target.value.length) ===
-				e.target.value
-			) {
-				setIsCorrect(true);
-			} else {
-				setIsCorrect(false);
-			}
-		}
-	};
-
-	useEffect(() => {
-		setTest(new TypingTest());
-		setIsReady(true);
-	}, []);
-
-	//Sets initial offsetTop after rendering of words
-	useEffect(() => {
-		if (isReady === null) {
-			return;
-		}
-		setOffset(document.getElementById('current-word')?.offsetTop);
-	}, [isReady]);
-
+const TextContainer = ({
+	test,
+	isCorrect,
+}: {
+	test: TypingTest;
+	isCorrect: boolean;
+}) => {
 	return (
-		<div className="flex justify-center items-center flex-col pt-24">
-			<div className="p-10 bg-white rounded-2xl w-4/5 max-w-[1000px] font-mono text-xl flex justify-center items-center">
+		<div className="flex justify-center items-center flex-col">
+			<div className="p-10 bg-white rounded-2xl w-4/5 max-w-[800px] font-mono text-xl flex justify-center items-center mt-10">
 				<div className="flex flex-wrap gap-2 h-24 overflow-hidden">
 					{test?.getWords().map((word, index) => (
 						<span
@@ -81,12 +37,6 @@ const TextContainer = () => {
 					))}
 				</div>
 			</div>
-			<input
-				className="mt-10 p-4"
-				type="text"
-				value={inputText}
-				onChange={(e) => onKeyPress(e)}
-			/>
 		</div>
 	);
 };
