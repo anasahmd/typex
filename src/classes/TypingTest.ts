@@ -67,7 +67,7 @@ class TypingTest {
 	getResults(seconds = 60): resultType {
 		return {
 			wpm: (this.correct / seconds) * 60,
-			acc: (this.correct * 100) / (this.correct + this.incorrect),
+			acc: (this.correct * 100) / (this.correct + this.incorrect) || 0,
 		};
 	}
 

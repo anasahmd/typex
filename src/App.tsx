@@ -7,6 +7,7 @@ import TypingTest from './classes/TypingTest';
 import TextInput from './components/TextInput';
 import { calculateRemainingTime } from './utils/functions';
 import ModeSelector from './components/ModeSelector';
+import TestResult from './components/TestResult';
 
 function App() {
 	const [test, setTest] = useState<TypingTest | null>(null);
@@ -34,6 +35,15 @@ function App() {
 			return () => clearInterval(intervalId);
 		}
 	}, [endTime, isTestOver]);
+
+	const resetTest = () => {
+		setTest(new TypingTest());
+		setIsTestOver(false);
+		setEndTime(null);
+		setTimeLeft('');
+		setInputText('');
+		setIsCorrect(true);
+	};
 
 	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value == ' ') {
@@ -88,8 +98,12 @@ function App() {
 	return (
 		<div className="bg-slate-100 min-h-screen">
 			<Header />
-			<ModeSelector />
-			{test && <TextContainer test={test} isCorrect={isCorrect} />}
+			<ModeSelector setTestDuration={setTestDuration} />
+			{test && isTestOver ? (
+				<TestResult testDuration={testDuration} test={test} />
+			) : (
+				test && <TextContainer test={test} isCorrect={isCorrect} />
+			)}
 			<div className="mt-10 flex mx-auto max-w-[800px] gap-10">
 				<TextInput
 					inputText={inputText}
@@ -98,6 +112,8 @@ function App() {
 				/>
 				{timeLeft ? (
 					<Timer time={timeLeft} />
+				) : isTestOver ? (
+					<Timer time={`0:00`} />
 				) : (
 					<Timer
 						time={calculateRemainingTime(
@@ -107,13 +123,14 @@ function App() {
 						)}
 					/>
 				)}
+				<button
+					type="button"
+					className="bg-white rounded-2xl px-4 py-2"
+					onClick={resetTest}
+				>
+					Reset
+				</button>
 			</div>
-			{isTestOver && (
-				<div>
-					WPM:{test?.getResults(testDuration).wpm} Accuracy:{' '}
-					{test?.getResults(testDuration).acc}
-				</div>
-			)}
 		</div>
 	);
 }
