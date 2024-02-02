@@ -29,9 +29,10 @@ function App() {
 					setEndTime(null);
 					clearInterval(intervalId);
 					setIsTestOver(true);
+					setInputText('');
 				}
 				console.log('hello');
-			}, 1000);
+			}, 100);
 			return () => clearInterval(intervalId);
 		}
 	}, [endTime, isTestOver]);
@@ -44,6 +45,10 @@ function App() {
 		setInputText('');
 		setIsCorrect(true);
 	};
+
+	useEffect(() => {
+		resetTest();
+	}, [testDuration]);
 
 	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value == ' ') {
@@ -104,32 +109,49 @@ function App() {
 			) : (
 				test && <TextContainer test={test} isCorrect={isCorrect} />
 			)}
-			<div className="mt-10 flex mx-auto max-w-[800px] gap-10">
-				<TextInput
-					inputText={inputText}
-					onKeyPress={onKeyPress}
-					isDisabled={isTestOver}
-				/>
-				{timeLeft ? (
-					<Timer time={timeLeft} />
-				) : isTestOver ? (
-					<Timer time={`0:00`} />
-				) : (
-					<Timer
-						time={calculateRemainingTime(
-							new Date(
-								new Date().setSeconds(new Date().getSeconds() + testDuration)
-							)
-						)}
+			<div className="mt-10 flex mx-auto max-w-[900px] gap-10 ">
+				<div className="w-full">
+					<TextInput
+						inputText={inputText}
+						onKeyPress={onKeyPress}
+						isDisabled={isTestOver}
 					/>
-				)}
-				<button
-					type="button"
-					className="bg-white rounded-2xl px-4 py-2"
-					onClick={resetTest}
-				>
-					Reset
-				</button>
+				</div>
+				<div className="flex w-full gap-10">
+					{timeLeft ? (
+						<Timer time={timeLeft} />
+					) : isTestOver ? (
+						<Timer time={`0:00`} />
+					) : (
+						<Timer
+							time={calculateRemainingTime(
+								new Date(
+									new Date().setSeconds(new Date().getSeconds() + testDuration)
+								)
+							)}
+						/>
+					)}
+					<button
+						type="button"
+						className=" rounded-2xl px-4 py-2  bg-cyan-400 flex-1"
+						onClick={resetTest}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth={1.5}
+							stroke="currentColor"
+							className="w-8 h-8 mx-auto text-cyan-950"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+							/>
+						</svg>
+					</button>
+				</div>
 			</div>
 		</div>
 	);

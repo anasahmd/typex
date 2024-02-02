@@ -12,7 +12,7 @@ const TextInput = ({
 	return (
 		<>
 			<input
-				className=" px-4 py-2 rounded-2xl text-lg disabled:bg-white disabled:cursor-not-allowed"
+				className="w-full px-4 py-4 rounded-2xl text-2xl disabled:bg-white disabled:cursor-not-allowed"
 				type="text"
 				value={inputText}
 				onChange={(e) => onKeyPress(e)}
