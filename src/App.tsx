@@ -8,6 +8,7 @@ import TextInput from './components/TextInput';
 import { calculateRemainingTime } from './utils/functions';
 import ModeSelector from './components/ModeSelector';
 import TestResult from './components/TestResult';
+import ResetButton from './components/ResetButton';
 
 function App() {
 	const [test, setTest] = useState<TypingTest | null>(null);
@@ -16,17 +17,17 @@ function App() {
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
 	const [timeLeft, setTimeLeft] = useState<string>('');
-	const [endTime, setEndTime] = useState<Date | null>(null);
+	const [startTime, setStartTime] = useState<Date | null>(null);
 	const [testDuration, setTestDuration] = useState(15);
 	const [isTestOver, setIsTestOver] = useState(false);
 
 	useEffect(() => {
-		if (endTime && !isTestOver) {
+		if (startTime && !isTestOver) {
 			const intervalId = setInterval(() => {
-				const result = calculateRemainingTime(endTime);
+				const result = calculateRemainingTime(startTime, testDuration);
 				setTimeLeft(result);
 				if (result === '') {
-					setEndTime(null);
+					setStartTime(null);
 					clearInterval(intervalId);
 					setIsTestOver(true);
 					setInputText('');
@@ -35,12 +36,12 @@ function App() {
 			}, 100);
 			return () => clearInterval(intervalId);
 		}
-	}, [endTime, isTestOver]);
+	}, [startTime, testDuration, isTestOver]);
 
 	const resetTest = () => {
 		setTest(new TypingTest());
 		setIsTestOver(false);
-		setEndTime(null);
+		setStartTime(null);
 		setTimeLeft('');
 		setInputText('');
 		setIsCorrect(true);
@@ -55,11 +56,9 @@ function App() {
 			return;
 		}
 
-		if (endTime === null) {
-			const time = new Date(
-				new Date().setSeconds(new Date().getSeconds() + testDuration)
-			);
-			setEndTime(time);
+		if (startTime === null) {
+			const time = new Date();
+			setStartTime(time);
 		}
 
 		if (e.target.value.slice(-1) === ' ') {
@@ -124,33 +123,12 @@ function App() {
 						<Timer time={`0:00`} />
 					) : (
 						<Timer
-							time={calculateRemainingTime(
-								new Date(
-									new Date().setSeconds(new Date().getSeconds() + testDuration)
-								)
-							)}
+							time={new Date(testDuration * 1000)
+								.toISOString()
+								.substring(15, 19)}
 						/>
 					)}
-					<button
-						type="button"
-						className=" rounded-2xl px-4 py-2  bg-cyan-400 flex-1"
-						onClick={resetTest}
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={1.5}
-							stroke="currentColor"
-							className="w-8 h-8 mx-auto text-cyan-950"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-							/>
-						</svg>
-					</button>
+					<ResetButton resetTest={resetTest} />
 				</div>
 			</div>
 		</div>
