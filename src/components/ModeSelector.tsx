@@ -1,34 +1,49 @@
-const allTimeModes: number[] = [15, 30, 60, 120];
-
-const ModeButton = ({
-	setTestDuration,
-	time,
-}: {
-	setTestDuration: React.Dispatch<React.SetStateAction<number>>;
-	time: number;
-}) => {
-	return (
-		<span
-			className="bg-white px-4 py-2 rounded-2xl cursor-pointer"
-			onClick={() => {
-				setTestDuration(time);
-			}}
-		>
-			{new Date(time * 1000).toISOString().substring(15, 19)}
-		</span>
-	);
-};
+import { modes } from '../utils/modes';
 
 const ModeSelector = ({
-	setTestDuration,
+	testMode,
+	setTestMode,
 }: {
-	setTestDuration: React.Dispatch<React.SetStateAction<number>>;
+	testMode: number[];
+	setTestMode: React.Dispatch<React.SetStateAction<number[]>>;
 }) => {
 	return (
-		<div className="flex gap-4 mt-32 max-w-[900px] mx-auto justify-end text-xl">
-			{allTimeModes.map((item) => (
-				<ModeButton setTestDuration={setTestDuration} time={item} />
-			))}
+		<div className="flex mt-40 max-w-[900px] mx-auto text-xl justify-between">
+			<div className="flex gap-4">
+				{modes.map((mode, index) => (
+					<span
+						className={
+							` px-4 py-2 rounded-2xl cursor-pointer ` +
+							(testMode[0] === index ? 'bg-cyan-400' : 'bg-white')
+						}
+						onClick={() => {
+							setTestMode([index, 1]);
+						}}
+					>
+						{mode.type}
+					</span>
+				))}
+			</div>
+			<div className="flex gap-4">
+				{modes.map((mode, modeIndex) => (
+					<>
+						{testMode[0] === modeIndex &&
+							mode.options.map((option, optionIndex) => (
+								<span
+									className={
+										` px-4 py-2 rounded-2xl cursor-pointer ` +
+										(testMode[1] === optionIndex ? 'bg-cyan-400' : 'bg-white')
+									}
+									onClick={() => {
+										setTestMode([modeIndex, optionIndex]);
+									}}
+								>
+									{option}
+								</span>
+							))}
+					</>
+				))}
+			</div>
 		</div>
 	);
 };

@@ -5,7 +5,7 @@ import TextContainer from './components/TextContainer';
 import Timer from './components/Timer';
 import TypingTest from './classes/TypingTest';
 import TextInput from './components/TextInput';
-// import ModeSelector from './components/ModeSelector';
+import ModeSelector from './components/ModeSelector';
 import TestResult from './components/TestResult';
 import ResetButton from './components/ResetButton';
 
@@ -16,6 +16,7 @@ function App() {
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
 	const [timerText, setTimerText] = useState('');
+	const [testMode, setTestMode] = useState([0, 0]);
 
 	useEffect(() => {
 		if (test !== null) {
@@ -33,7 +34,7 @@ function App() {
 	}, [test]);
 
 	const resetTest = () => {
-		setTest(new TypingTest(0, 0));
+		setTest(new TypingTest(testMode[0], testMode[1]));
 		setInputText('');
 		setIsCorrect(true);
 	};
@@ -74,9 +75,9 @@ function App() {
 	};
 
 	useEffect(() => {
-		setTest(new TypingTest(0, 0));
+		setTest(new TypingTest(testMode[0], testMode[1]));
 		setIsTextReady(true);
-	}, []);
+	}, [testMode]);
 
 	//Sets initial offsetTop after rendering of words
 	useEffect(() => {
@@ -89,7 +90,7 @@ function App() {
 	return (
 		<div className="bg-slate-100 min-h-screen">
 			<Header />
-			{/* <ModeSelector setTestDuration={setTestDuration} /> */}
+			<ModeSelector testMode={testMode} setTestMode={setTestMode} />
 			{test?.isTestOver() ? (
 				<TestResult test={test} />
 			) : (
