@@ -1,3 +1,4 @@
+import { TestMode, TestOption, modes } from '../utils/modes';
 import { WORDS } from '../utils/words';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,12 +22,27 @@ class TypingTest {
 	private currentIndex: number;
 	private correct: number;
 	private incorrect: number;
+	public testOver: boolean;
+	private testMode: TestMode;
+	private testModeOption: TestOption;
+	private startTime: Date | null;
+	private endTime: Date | null;
 
-	constructor(words = 60) {
-		this.words = this.generateRandomWords(words);
+	constructor(mode: number, modeOption: number) {
 		this.currentIndex = 0;
 		this.correct = 0;
 		this.incorrect = 0;
+		this.testOver = false;
+		this.testMode = modes[mode];
+		this.testModeOption = this.testMode.options[modeOption];
+		this.startTime = null;
+		this.endTime = null;
+
+		if (this.testMode.type === 'words') {
+			this.words = this.generateRandomWords(this.testModeOption);
+		} else {
+			this.words = this.generateRandomWords(30);
+		}
 	}
 
 	getCurrentIndex(): number {
@@ -51,6 +67,19 @@ class TypingTest {
 		return this.words;
 	}
 
+	setStartTime(startTime: Date) {
+		this.startTime = startTime;
+		if (this.testMode.type === 'time') {
+			this.endTime = new Date(
+				new Date().setSeconds(startTime.getSeconds() + this.testModeOption)
+			);
+		}
+	}
+
+	getStartTime() {
+		return this.startTime;
+	}
+
 	getUserInput(text: string) {
 		if (this.words[this.currentIndex].text === text) {
 			this.correct++;
@@ -60,15 +89,87 @@ class TypingTest {
 			this.words[this.currentIndex].status = 'incorrect';
 		}
 		this.currentIndex++;
-		const word = this.generateRandomWord();
-		this.words.push(word);
+
+		if (this.testMode.type === 'time') {
+			const word = this.generateRandomWord();
+			this.words.push(word);
+		} else if (this.testMode.type === 'words') {
+			if (this.currentIndex >= this.words.length) {
+				this.endTime = new Date();
+			}
+		}
 	}
 
-	getResults(seconds = 60): resultType {
+	getResult(): resultType {
+		let testSeconds = 0;
+		if (this.startTime !== null) {
+			const startTimeSeconds = this.startTime.getTime() / 1000;
+			if (this.endTime !== null) {
+				const endTimeSeconds = this.endTime.getTime() / 1000;
+				testSeconds = endTimeSeconds - startTimeSeconds;
+			} else {
+				const currentTimeSeconds = new Date().getTime() / 1000;
+				testSeconds = currentTimeSeconds - startTimeSeconds;
+			}
+
+			return {
+				wpm: Math.ceil((this.correct / testSeconds) * 60),
+				acc: (this.correct * 100) / (this.correct + this.incorrect) || 0,
+			};
+		}
 		return {
-			wpm: (this.correct / seconds) * 60,
-			acc: (this.correct * 100) / (this.correct + this.incorrect) || 0,
+			wpm: 0,
+			acc: 0,
 		};
+	}
+
+	getTimeLeft(): string {
+		if (this.testMode.type === 'time') {
+			if (this.startTime !== null && this.endTime !== null) {
+				const currentTimeSeconds = new Date().getTime() / 1000;
+				const endTimeSeconds = this.endTime.getTime() / 1000;
+				const difference = endTimeSeconds - currentTimeSeconds;
+				if (difference > 0) {
+					return new Date(difference * 1000).toISOString().substring(15, 19);
+				} else {
+					return '0:00';
+				}
+			} else {
+				return new Date(this.testModeOption * 1000)
+					.toISOString()
+					.substring(15, 19);
+			}
+		} else {
+			return '';
+		}
+	}
+
+	isTestOver(): boolean {
+		if (this.testMode.type === 'time') {
+			if (this.startTime !== null && this.endTime !== null) {
+				//test has started
+				const currentTimeSeconds = new Date().getTime() / 1000;
+				const endTimeSeconds = this.endTime.getTime() / 1000;
+				const difference = endTimeSeconds - currentTimeSeconds;
+				if (difference > 0) {
+					//test in progress
+					return false;
+				} else {
+					//test ended
+					return true;
+				}
+			} else {
+				//test hasn't started yet
+				return false;
+			}
+		} else {
+			if (this.endTime !== null) {
+				// set endtime in getUserInput
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 	removeTypedWords() {

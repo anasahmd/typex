@@ -5,8 +5,7 @@ import TextContainer from './components/TextContainer';
 import Timer from './components/Timer';
 import TypingTest from './classes/TypingTest';
 import TextInput from './components/TextInput';
-import { calculateRemainingTime } from './utils/functions';
-import ModeSelector from './components/ModeSelector';
+// import ModeSelector from './components/ModeSelector';
 import TestResult from './components/TestResult';
 import ResetButton from './components/ResetButton';
 
@@ -16,49 +15,37 @@ function App() {
 	const [isCorrect, setIsCorrect] = useState(true);
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
-	const [timeLeft, setTimeLeft] = useState<string>('');
-	const [startTime, setStartTime] = useState<Date | null>(null);
-	const [testDuration, setTestDuration] = useState(15);
-	const [isTestOver, setIsTestOver] = useState(false);
+	const [timerText, setTimerText] = useState('');
 
 	useEffect(() => {
-		if (startTime && !isTestOver) {
+		if (test !== null) {
 			const intervalId = setInterval(() => {
-				const result = calculateRemainingTime(startTime, testDuration);
-				setTimeLeft(result);
-				if (result === '') {
-					setStartTime(null);
+				setTimerText(test.getTimeLeft());
+				if (test.isTestOver()) {
 					clearInterval(intervalId);
-					setIsTestOver(true);
 					setInputText('');
+					setIsCorrect(true);
 				}
 				console.log('hello');
 			}, 100);
 			return () => clearInterval(intervalId);
 		}
-	}, [startTime, testDuration, isTestOver]);
+	}, [test]);
 
 	const resetTest = () => {
-		setTest(new TypingTest());
-		setIsTestOver(false);
-		setStartTime(null);
-		setTimeLeft('');
+		setTest(new TypingTest(0, 0));
 		setInputText('');
 		setIsCorrect(true);
 	};
 
-	useEffect(() => {
-		resetTest();
-	}, [testDuration]);
-
 	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.value == ' ') {
+		if (e.target.value == ' ' || test?.isTestOver()) {
 			return;
 		}
 
-		if (startTime === null) {
+		if (test?.getStartTime() === null) {
 			const time = new Date();
-			setStartTime(time);
+			test.setStartTime(time);
 		}
 
 		if (e.target.value.slice(-1) === ' ') {
@@ -87,7 +74,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		setTest(new TypingTest());
+		setTest(new TypingTest(0, 0));
 		setIsTextReady(true);
 	}, []);
 
@@ -102,32 +89,24 @@ function App() {
 	return (
 		<div className="bg-slate-100 min-h-screen">
 			<Header />
-			<ModeSelector setTestDuration={setTestDuration} />
-			{test && isTestOver ? (
-				<TestResult testDuration={testDuration} test={test} />
+			{/* <ModeSelector setTestDuration={setTestDuration} /> */}
+			{test?.isTestOver() ? (
+				<TestResult test={test} />
 			) : (
 				test && <TextContainer test={test} isCorrect={isCorrect} />
 			)}
 			<div className="mt-10 flex mx-auto max-w-[900px] gap-10 ">
 				<div className="w-full">
-					<TextInput
-						inputText={inputText}
-						onKeyPress={onKeyPress}
-						isDisabled={isTestOver}
-					/>
-				</div>
-				<div className="flex w-full gap-10">
-					{timeLeft ? (
-						<Timer time={timeLeft} />
-					) : isTestOver ? (
-						<Timer time={`0:00`} />
-					) : (
-						<Timer
-							time={new Date(testDuration * 1000)
-								.toISOString()
-								.substring(15, 19)}
+					{test && (
+						<TextInput
+							inputText={inputText}
+							onKeyPress={onKeyPress}
+							isDisabled={test?.getStartTime() !== null && test?.isTestOver()}
 						/>
 					)}
+				</div>
+				<div className="flex w-full gap-10">
+					<Timer time={timerText} />
 					<ResetButton resetTest={resetTest} />
 				</div>
 			</div>
