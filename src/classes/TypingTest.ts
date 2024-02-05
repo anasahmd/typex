@@ -27,6 +27,7 @@ class TypingTest {
 	private testModeOption: TestOption;
 	private startTime: Date | null;
 	private endTime: Date | null;
+	private wordCount: number;
 
 	constructor(mode: number, modeOption: number) {
 		this.currentIndex = 0;
@@ -37,11 +38,14 @@ class TypingTest {
 		this.testModeOption = this.testMode.options[modeOption];
 		this.startTime = null;
 		this.endTime = null;
+		this.wordCount = 0;
 
 		if (this.testMode.type === 'words') {
 			this.words = this.generateRandomWords(this.testModeOption);
+			this.wordCount += this.testModeOption;
 		} else {
-			this.words = this.generateRandomWords(30);
+			this.words = this.generateRandomWords(50);
+			this.wordCount += 50;
 		}
 	}
 
@@ -92,6 +96,7 @@ class TypingTest {
 
 		if (this.testMode.type === 'time') {
 			const word = this.generateRandomWord();
+			this.wordCount++;
 			this.words.push(word);
 		} else if (this.testMode.type === 'words') {
 			if (this.currentIndex >= this.words.length) {
@@ -140,7 +145,7 @@ class TypingTest {
 					.substring(15, 19);
 			}
 		} else {
-			return '';
+			return `${this.correct + this.incorrect}/${this.wordCount}`;
 		}
 	}
 

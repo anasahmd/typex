@@ -2,7 +2,7 @@
 // import TypingTest from './TypingTest';
 
 // test('Adds 1 letter in the array for each input', () => {
-// 	const test = new TypingTest(30);
+// 	const test = new TypingTest(0, 1);
 // 	expect(test.getWords().length).toBe(30);
 // 	test.getUserInput('hello');
 // 	expect(test.getWords().length).toBe(31);

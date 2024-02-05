@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { modes } from '../utils/modes';
 
 const ModeSelector = ({
@@ -8,7 +9,7 @@ const ModeSelector = ({
 	setTestMode: React.Dispatch<React.SetStateAction<number[]>>;
 }) => {
 	return (
-		<div className="flex mt-40 max-w-[900px] mx-auto text-xl justify-between">
+		<div className="flex mt-40 max-w-[900px] mx-auto text-xl justify-between flex-col sm:flex-row">
 			<div className="flex gap-4">
 				{modes.map((mode, index) => (
 					<span
@@ -19,6 +20,7 @@ const ModeSelector = ({
 						onClick={() => {
 							setTestMode([index, 1]);
 						}}
+						key={index}
 					>
 						{mode.type}
 					</span>
@@ -26,7 +28,7 @@ const ModeSelector = ({
 			</div>
 			<div className="flex gap-4">
 				{modes.map((mode, modeIndex) => (
-					<>
+					<Fragment key={modeIndex}>
 						{testMode[0] === modeIndex &&
 							mode.options.map((option, optionIndex) => (
 								<span
@@ -37,11 +39,12 @@ const ModeSelector = ({
 									onClick={() => {
 										setTestMode([modeIndex, optionIndex]);
 									}}
+									key={optionIndex}
 								>
 									{option}
 								</span>
 							))}
-					</>
+					</Fragment>
 				))}
 			</div>
 		</div>

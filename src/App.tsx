@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import TextContainer from './components/TextContainer';
@@ -8,6 +8,7 @@ import TextInput from './components/TextInput';
 import ModeSelector from './components/ModeSelector';
 import TestResult from './components/TestResult';
 import ResetButton from './components/ResetButton';
+import { useLocalStorage } from './utils/useLocalStorage';
 
 function App() {
 	const [test, setTest] = useState<TypingTest | null>(null);
@@ -16,7 +17,7 @@ function App() {
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
 	const [timerText, setTimerText] = useState('');
-	const [testMode, setTestMode] = useState([0, 0]);
+	const [testMode, setTestMode] = useLocalStorage('mode', [0, 0]);
 
 	useEffect(() => {
 		if (test !== null) {
@@ -27,17 +28,17 @@ function App() {
 					setInputText('');
 					setIsCorrect(true);
 				}
-				console.log('hello');
 			}, 100);
 			return () => clearInterval(intervalId);
 		}
 	}, [test]);
 
-	const resetTest = () => {
+	const resetTest = useCallback(() => {
 		setTest(new TypingTest(testMode[0], testMode[1]));
 		setInputText('');
 		setIsCorrect(true);
-	};
+		setIsTextReady(true);
+	}, [testMode]);
 
 	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value == ' ' || test?.isTestOver()) {
@@ -75,9 +76,8 @@ function App() {
 	};
 
 	useEffect(() => {
-		setTest(new TypingTest(testMode[0], testMode[1]));
-		setIsTextReady(true);
-	}, [testMode]);
+		resetTest();
+	}, [resetTest, testMode]);
 
 	//Sets initial offsetTop after rendering of words
 	useEffect(() => {
@@ -88,7 +88,7 @@ function App() {
 	}, [isTextReady]);
 
 	return (
-		<div className="bg-slate-100 min-h-screen">
+		<div className="bg-slate-100 min-h-screen min-w-full">
 			<Header />
 			<ModeSelector testMode={testMode} setTestMode={setTestMode} />
 			{test?.isTestOver() ? (
@@ -107,7 +107,7 @@ function App() {
 					)}
 				</div>
 				<div className="flex w-full gap-10">
-					<Timer time={timerText} />
+					<Timer timerText={timerText} />
 					<ResetButton resetTest={resetTest} />
 				</div>
 			</div>

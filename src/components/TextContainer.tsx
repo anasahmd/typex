@@ -16,7 +16,7 @@ const TextContainer = ({
 							key={word.id}
 							id={test.getCurrentIndex() === index ? 'current-word' : ''}
 							className={
-								` px-2 ${
+								` px-1.5 ${
 									test.getCurrentIndex() === index
 										? isCorrect
 											? 'current-word bg-slate-200'
