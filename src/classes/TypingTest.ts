@@ -71,7 +71,7 @@ class TypingTest {
 		this.startTime = startTime;
 		if (this.testMode.type === 'time') {
 			this.endTime = new Date(
-				new Date().setSeconds(startTime.getSeconds() + this.testModeOption)
+				this.startTime.getTime() + this.testModeOption * 1000
 			);
 		}
 	}
@@ -151,7 +151,7 @@ class TypingTest {
 				const currentTimeSeconds = new Date().getTime() / 1000;
 				const endTimeSeconds = this.endTime.getTime() / 1000;
 				const difference = endTimeSeconds - currentTimeSeconds;
-				if (difference > 0) {
+				if (difference >= 0) {
 					//test in progress
 					return false;
 				} else {
