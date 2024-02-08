@@ -92,7 +92,7 @@ function App() {
 	}, [isTextReady]);
 
 	return (
-		<div className="bg-slate-100 dark:bg-gray-900 dark:text-slate-400 min-h-screen relative min-w-full px-4 lg:px-0 sm:px-4">
+		<div className="bg-slate-100 flex flex-col max-w-[900px] dark:bg-gray-900 dark:text-slate-400 min-h-screen relative min-w-full px-4 lg:px-0 sm:px-4">
 			<Header />
 			<ModeSelector testMode={testMode} setTestMode={setTestMode} />
 			{test &&
@@ -102,7 +102,7 @@ function App() {
 					<TextContainer test={test} isCorrect={isCorrect} />
 				))}
 
-			<div className="mt-10 flex mx-auto max-w-[900px] gap-10 flex-col sm:flex-row">
+			<div className="mt-10 mb-20 flex mx-auto gap-10 flex-col sm:flex-row max-w-[900px] w-full">
 				<div className="w-full">
 					{test && (
 						<TextInput
@@ -112,7 +112,7 @@ function App() {
 						/>
 					)}
 				</div>
-				<div className="flex w-full gap-10">
+				<div className="flex gap-10 w-full">
 					<Timer timerText={timerText} />
 					<ResetButton resetTest={resetTest} />
 				</div>

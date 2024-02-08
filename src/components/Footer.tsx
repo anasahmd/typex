@@ -1,11 +1,7 @@
 const Footer = () => {
 	return (
-		<div className="absolute bottom-0 mb-4 text-center left-0 right-0 text-lg max-w-[900px] mx-auto">
-			<a href="" className="underline">
-				About
-			</a>{' '}
-			/{' '}
-			<a href="" className="underline">
+		<div className=" mb-10 text-center  text-lg max-w-[900px] mx-auto justify-self-end mt-auto">
+			<a href="https://github.com/anasahmd/typezone" className="underline">
 				Source Code
 			</a>
 		</div>

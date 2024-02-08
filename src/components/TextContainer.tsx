@@ -16,11 +16,11 @@ const TextContainer = ({
 							key={word.text + wordIndex}
 							id={test.getCurrentIndex() === wordIndex ? 'current-word' : ''}
 							className={
-								` px-1.5 ${
+								` px-1.5  ${
 									test.getCurrentIndex() === wordIndex
 										? isCorrect
-											? 'current-word bg-slate-200 dark:bg-slate-700'
-											: 'bg-red-500 dark:bg-red-800'
+											? 'current-word bg-slate-200 dark:bg-slate-700 '
+											: ' text-red-500 bg-slate-200 dark:bg-slate-700 '
 										: ''
 								}` +
 								`${

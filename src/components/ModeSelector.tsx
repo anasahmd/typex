@@ -9,7 +9,7 @@ const ModeSelector = ({
 	setTestMode: React.Dispatch<React.SetStateAction<number[]>>;
 }) => {
 	return (
-		<div className="flex mt-12 gap-4 sm:mt-24 max-w-[900px] mx-auto sm:text-xl justify-between flex-col sm:flex-row">
+		<div className="flex mt-12 gap-4 sm:mt-24 w-full max-w-[900px] mx-auto sm:text-xl justify-between flex-col sm:flex-row">
 			<div className="flex gap-4">
 				{modes.map((mode, index) => (
 					<span
