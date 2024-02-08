@@ -9,25 +9,25 @@ const TextContainer = ({
 }) => {
 	return (
 		<div className="flex justify-center items-center flex-col">
-			<div className="p-10 bg-white rounded-2xl w-4/5 max-w-[900px] font-mono text-2xl flex items-center mt-10">
-				<div className="flex flex-wrap h-24 overflow-hidden justify-start items-start">
-					{test?.getWords().map((word, index) => (
+			<div className="p-4 sm:p-10 bg-white dark:bg-gray-800 w-full rounded-2xl max-w-[900px] font-mono text-lg sm:text-2xl flex items-center mt-10">
+				<div className="flex flex-wrap h-20 sm:h-24 overflow-hidden justify-start items-start">
+					{test?.getWords().map((word, wordIndex) => (
 						<span
-							key={word.id}
-							id={test.getCurrentIndex() === index ? 'current-word' : ''}
+							key={word.text + wordIndex}
+							id={test.getCurrentIndex() === wordIndex ? 'current-word' : ''}
 							className={
 								` px-1.5 ${
-									test.getCurrentIndex() === index
+									test.getCurrentIndex() === wordIndex
 										? isCorrect
-											? 'current-word bg-slate-200'
-											: 'bg-red-400'
+											? 'current-word bg-slate-200 dark:bg-slate-700'
+											: 'bg-red-800'
 										: ''
 								}` +
 								`${
 									word.status === 'correct'
-										? 'text-green-600'
+										? 'text-green-500'
 										: word.status === 'incorrect'
-										? 'text-red-600'
+										? 'text-red-500'
 										: ''
 								}`
 							}

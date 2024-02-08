@@ -1,6 +1,5 @@
 import { TestMode, TestOption, modes } from '../utils/modes';
 import { WORDS } from '../utils/words';
-import { v4 as uuidv4 } from 'uuid';
 
 type wordStatus = 'correct' | 'incorrect' | 'none';
 type resultType = { wpm: number; acc: number };
@@ -8,10 +7,8 @@ type resultType = { wpm: number; acc: number };
 export class Word {
 	public text: string;
 	public status: wordStatus;
-	public id: string;
 
 	constructor(text: string) {
-		this.id = uuidv4();
 		this.text = text;
 		this.status = 'none';
 	}

@@ -2,7 +2,7 @@ const ResetButton = ({ resetTest }: { resetTest: () => void }) => {
 	return (
 		<button
 			type="button"
-			className=" rounded-2xl px-4 py-2  bg-cyan-400 flex-1"
+			className=" rounded-2xl px-4 py-2  bg-slate-800 flex-1"
 			onClick={resetTest}
 		>
 			<svg
@@ -11,7 +11,7 @@ const ResetButton = ({ resetTest }: { resetTest: () => void }) => {
 				viewBox="0 0 24 24"
 				strokeWidth={1.5}
 				stroke="currentColor"
-				className="w-8 h-8 mx-auto text-cyan-950"
+				className="w-5 h-6 sm:w-8 sm:h-8 mx-auto text-white"
 			>
 				<path
 					strokeLinecap="round"

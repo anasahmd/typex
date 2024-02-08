@@ -12,11 +12,12 @@ const TextInput = ({
 	return (
 		<>
 			<input
-				className="w-full px-4 py-4 rounded-2xl text-2xl disabled:bg-white disabled:cursor-not-allowed"
+				className="w-full p-3 sm:p-4 rounded-2xl text-lg sm:text-2xl disabled:bg-white disabled:cursor-not-allowed dark:bg-gray-800"
 				type="text"
 				value={inputText}
 				onChange={(e) => onKeyPress(e)}
 				disabled={isDisabled}
+				autoCapitalize="none"
 			/>
 		</>
 	);

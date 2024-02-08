@@ -9,6 +9,7 @@ import ModeSelector from './components/ModeSelector';
 import TestResult from './components/TestResult';
 import ResetButton from './components/ResetButton';
 import { useLocalStorage } from './utils/useLocalStorage';
+import Footer from './components/Footer';
 
 function App() {
 	const [test, setTest] = useState<TypingTest | null>(null);
@@ -18,6 +19,7 @@ function App() {
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
 	const [timerText, setTimerText] = useState('');
 	const [testMode, setTestMode] = useLocalStorage('mode', [0, 0]);
+	const [isTestOver, setIsTestOver] = useState(false);
 
 	useEffect(() => {
 		if (test !== null) {
@@ -27,6 +29,7 @@ function App() {
 					clearInterval(intervalId);
 					setInputText('');
 					setIsCorrect(true);
+					setIsTestOver(true);
 				}
 			}, 100);
 			return () => clearInterval(intervalId);
@@ -38,6 +41,7 @@ function App() {
 		setInputText('');
 		setIsCorrect(true);
 		setIsTextReady(true);
+		setIsTestOver(false);
 	}, [testMode]);
 
 	const onKeyPress = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,15 +92,17 @@ function App() {
 	}, [isTextReady]);
 
 	return (
-		<div className="bg-slate-100 min-h-screen min-w-full">
+		<div className="bg-slate-100 dark:bg-gray-900 dark:text-slate-400 min-h-screen relative min-w-full px-4 lg:px-0 sm:px-4">
 			<Header />
 			<ModeSelector testMode={testMode} setTestMode={setTestMode} />
-			{test?.isTestOver() ? (
-				<TestResult test={test} />
-			) : (
-				test && <TextContainer test={test} isCorrect={isCorrect} />
-			)}
-			<div className="mt-10 flex mx-auto max-w-[900px] gap-10 ">
+			{test &&
+				(isTestOver ? (
+					<TestResult test={test} />
+				) : (
+					<TextContainer test={test} isCorrect={isCorrect} />
+				))}
+
+			<div className="mt-10 flex mx-auto max-w-[900px] gap-10 flex-col sm:flex-row">
 				<div className="w-full">
 					{test && (
 						<TextInput
@@ -111,6 +117,7 @@ function App() {
 					<ResetButton resetTest={resetTest} />
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }
