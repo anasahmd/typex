@@ -20,7 +20,7 @@ const TextContainer = ({
 									test.getCurrentIndex() === wordIndex
 										? isCorrect
 											? 'current-word bg-slate-200 dark:bg-slate-700'
-											: 'bg-red-800'
+											: 'bg-red-500 dark:bg-red-800'
 										: ''
 								}` +
 								`${
