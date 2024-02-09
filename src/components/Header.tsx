@@ -5,7 +5,7 @@ const Header = () => {
 		<header>
 			<nav className="pt-10 max-w-[900px] mx-auto flex justify-between items-center">
 				<div>
-					<div className="logo text-3xl font-bold">TypeZone</div>
+					<div className="logo text-3xl font-bold">TypeX</div>
 					<span className="text-lg">
 						by{' '}
 						<a href="https://anasahmad.dev" className="font-medium underline">

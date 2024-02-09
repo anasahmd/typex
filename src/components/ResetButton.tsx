@@ -11,7 +11,7 @@ const ResetButton = ({ resetTest }: { resetTest: () => void }) => {
 				viewBox="0 0 24 24"
 				strokeWidth={1.5}
 				stroke="currentColor"
-				className="w-5 h-6 sm:w-8 sm:h-8 mx-auto text-white"
+				className="w-5 h-6 sm:w-8 sm:h-8 mx-auto text-white dark:text-slate-400"
 			>
 				<path
 					strokeLinecap="round"

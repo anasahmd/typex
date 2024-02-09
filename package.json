@@ -1,5 +1,5 @@
 {
-	"name": "typing-test",
+	"name": "typex",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -13,7 +13,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/anasahmd/typezone"
+		"url": "https://github.com/anasahmd/typex"
 	},
 	"keywords": [
 		"react",
@@ -21,7 +21,7 @@
 		"tailwindcss",
 		"vite",
 		"typing-test",
-		"typezone"
+		"typex"
 	],
 	"dependencies": {
 		"react": "^18.2.0",

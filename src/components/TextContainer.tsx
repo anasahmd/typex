@@ -25,9 +25,9 @@ const TextContainer = ({
 								}` +
 								`${
 									word.status === 'correct'
-										? 'text-green-500'
+										? 'text-green-500 dark:text-green-400'
 										: word.status === 'incorrect'
-										? 'text-red-500'
+										? 'text-green-500 darK:text-red-400'
 										: ''
 								}`
 							}

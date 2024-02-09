@@ -18,7 +18,7 @@ function App() {
 	const [offset, setOffset] = useState<number | undefined>(undefined);
 	const [isTextReady, setIsTextReady] = useState<boolean | null>(null);
 	const [timerText, setTimerText] = useState('');
-	const [testMode, setTestMode] = useLocalStorage('mode', [0, 0]);
+	const [testMode, setTestMode] = useLocalStorage('mode', [0, 2]);
 	const [isTestOver, setIsTestOver] = useState(false);
 
 	useEffect(() => {
