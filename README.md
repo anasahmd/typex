@@ -8,7 +8,7 @@
 - Time Mode and Words Mode
 - Dark/Light Theme
 - Responsive Design
-- Saves your preference
+- Saves your preference in local storage
 
 ## Tech Stack
 
