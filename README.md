@@ -1,4 +1,6 @@
-# Typex: Minimal Typing Tesst
+# TypeX: Minimal Typing Test
+
+[Live Version](https://typex.anasahmad.dev/)
 
 ## Key Features
 
@@ -17,21 +19,19 @@
 ## Screenshots
 
 Dark Mode:
+
 ![Dark Mode Screenshot](public/images/dark_mode.png)
 
 Light Mode:
+
 ![Light Mode Screenshot](public/images/light_mode.png)
-
-## Live Version
-
-[Click Here](https://typex.anasahmad.dev/)
 
 ## Run Locally
 
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/anasahmd/typex.git
 ```
 
 Go to the project directory
